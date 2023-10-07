@@ -7,21 +7,8 @@ servers:
   - url: "http://127.0.0.1:8080"
 tags:
   - name: Auth
+  - name: Advertisement
 paths:
-  /:
-    get:
-      description: "Hello World!"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            text/plain:
-              schema:
-                type: "string"
-              examples:
-                Example#1:
-                  value: "Hello World!"
-
   /register:
     post:
       tags:
@@ -39,7 +26,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisterResponse"
+                $ref: "#/components/schemas/PostResponse"
 
   /login:
     post:
@@ -60,6 +47,42 @@ paths:
               schema:
                 $ref: "#/components/schemas/LoginResponse"
 
+  /advertisement-list:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Advertisement
+      summary: "Advertisement List"
+      responses:
+        200:
+          description: "Advertisement List"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertisementResponse"
+
+  /add-advertisement:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Advertisement
+      summary: "Add new advertisement"
+      requestBody:
+        description: Add new advertisement
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvertisementRequest"
+      responses:
+        200:
+          description: "Successfully added new advertisement!"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostResponse"
+
 components:
   schemas:
     RegisterModel:
@@ -75,7 +98,7 @@ components:
           type: string
         profileImageUrl:
           type: string
-    RegisterResponse:
+    PostResponse:
       type: object
       properties:
         message:
@@ -98,3 +121,57 @@ components:
           type: boolean
         token:
           type: string
+    AdvertisementResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        creatorId:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: integer
+        images:
+          type: array
+          items:
+            type: string
+        location:
+          $ref: "#/components/schemas/Location"
+        isCompleted:
+          type: boolean
+        createdAt:
+          type: string
+    Location:
+      type: object
+      properties:
+        longitude:
+          type: string
+        latitude:
+          type: string
+
+    AdvertisementRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: integer
+        images:
+          type: array
+          items:
+            type: string
+        longitude:
+          type: string
+        latitude:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

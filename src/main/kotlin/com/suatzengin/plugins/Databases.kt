@@ -1,5 +1,6 @@
 package com.suatzengin.plugins
 
+import com.suatzengin.model.AdvertisementTable
 import com.suatzengin.model.UserTable
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
@@ -22,5 +23,6 @@ fun Application.configureDatabases() {
 
     transaction(database) {
         SchemaUtils.create(UserTable)
+        SchemaUtils.create(AdvertisementTable)
     }
 }
