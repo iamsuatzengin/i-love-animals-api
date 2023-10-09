@@ -1,13 +1,12 @@
 package com.suatzengin.data.advertisement
 
-import com.suatzengin.data.request.AdvertisementRequest
+import com.suatzengin.data.request.advertisement.AdvertisementRequest
+import com.suatzengin.data.request.advertisement.UpdateAdRequest
 import com.suatzengin.model.Advertisement
 import com.suatzengin.model.AdvertisementTable
 import com.suatzengin.util.extensions.dbQuery
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -33,6 +32,12 @@ class AdvertisementDaoImpl : AdvertisementDao {
             .toList()
     }
 
+    override suspend fun getAdvertisementById(id: UUID): Advertisement = dbQuery {
+        AdvertisementTable.select { AdvertisementTable.id eq id }
+            .map(::resultRow)
+            .single()
+    }
+
     override suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String) = dbQuery {
         val insertStatement = AdvertisementTable.insert { statement ->
             statement[creatorId] = UUID.fromString(userId)
@@ -45,5 +50,18 @@ class AdvertisementDaoImpl : AdvertisementDao {
             statement[isCompleted] = false
             statement[createdAt] = LocalDateTime.now()
         }
+    }
+
+    override suspend fun updateAdvertisement(id: UUID, updateAdRequest: UpdateAdRequest): Boolean = dbQuery {
+        AdvertisementTable.update({ AdvertisementTable.id eq id }) { updateStatement ->
+            updateStatement[title] = updateAdRequest.title
+            updateStatement[description] = updateAdRequest.description
+            updateStatement[category] = updateAdRequest.category
+            updateStatement[isCompleted] = updateAdRequest.isCompleted
+        } > 0
+    }
+
+    override suspend fun deleteAdvertisement(id: UUID): Boolean = dbQuery {
+        AdvertisementTable.deleteWhere { AdvertisementTable.id eq id } > 0
     }
 }

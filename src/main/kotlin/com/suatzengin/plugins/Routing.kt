@@ -2,8 +2,7 @@ package com.suatzengin.plugins
 
 import com.suatzengin.data.advertisement.AdvertisementDao
 import com.suatzengin.data.auth.AuthDao
-import com.suatzengin.routes.advertisement.addAdvertisement
-import com.suatzengin.routes.advertisement.getAllAdvertisementRoute
+import com.suatzengin.routes.advertisement.*
 import com.suatzengin.routes.auth.loginRoute
 import com.suatzengin.routes.auth.registerRoute
 import com.suatzengin.util.extensions.configureJWTConfig
@@ -25,5 +24,8 @@ fun Application.configureRouting() {
         // Advertisement routes
         getAllAdvertisementRoute(dao = advertisementDao)
         addAdvertisement(dao = advertisementDao)
+        getAdvertisement(dao = advertisementDao)
+        updateAdvertisement(dao = advertisementDao)
+        deleteAdvertisement(dao = advertisementDao)
     }
 }

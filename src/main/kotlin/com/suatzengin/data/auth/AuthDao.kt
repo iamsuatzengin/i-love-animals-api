@@ -1,6 +1,6 @@
 package com.suatzengin.data.auth
 
-import com.suatzengin.data.request.RegisterRequest
+import com.suatzengin.data.request.auth.RegisterRequest
 import com.suatzengin.model.User
 
 interface AuthDao {

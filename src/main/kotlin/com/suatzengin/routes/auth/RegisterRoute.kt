@@ -1,7 +1,7 @@
 package com.suatzengin.routes.auth
 
 import com.suatzengin.data.auth.AuthDao
-import com.suatzengin.data.request.RegisterRequest
+import com.suatzengin.data.request.auth.RegisterRequest
 import com.suatzengin.data.response.PostResponse
 import io.ktor.http.*
 import io.ktor.server.application.*

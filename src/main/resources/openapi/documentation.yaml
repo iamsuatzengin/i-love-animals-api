@@ -45,7 +45,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/LoginResponse"
+               $ref: "#/components/schemas/LoginResponse"
 
   /advertisement-list:
     get:
@@ -61,6 +61,77 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AdvertisementResponse"
+
+  /advertisement/{id}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Advertisement
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The advertisement UUID
+      responses:
+        200:
+          description: An advertisement by ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertisementResponse"
+
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Advertisement
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The advertisement UUID
+      requestBody:
+        description: Add new advertisement
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateAdvertisementRequest"
+
+      responses:
+        200:
+          description: An advertisement by ID
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Başarılı bir şekilde güncellendi."
+
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Advertisement
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The advertisement UUID
+      responses:
+        200:
+          description: An advertisement by ID
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Başarılı bir şekilde güncellendi."
+
 
   /add-advertisement:
     post:
@@ -82,6 +153,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PostResponse"
+
 
 components:
   schemas:
@@ -169,6 +241,17 @@ components:
           type: string
         latitude:
           type: string
+    UpdateAdvertisementRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: integer
+        isCompleted:
+          type: boolean
 
   securitySchemes:
     bearerAuth:

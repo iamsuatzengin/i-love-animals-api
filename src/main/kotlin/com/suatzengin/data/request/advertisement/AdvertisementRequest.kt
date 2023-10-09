@@ -1,4 +1,4 @@
-package com.suatzengin.data.request
+package com.suatzengin.data.request.advertisement
 
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
 package com.suatzengin.routes.advertisement
 
 import com.suatzengin.data.advertisement.AdvertisementDao
-import com.suatzengin.data.request.AdvertisementRequest
+import com.suatzengin.data.request.advertisement.AdvertisementRequest
 import com.suatzengin.data.response.PostResponse
 import com.suatzengin.util.exception.AuthenticationException
 import io.ktor.http.*
@@ -28,8 +28,8 @@ fun Route.addAdvertisement(dao: AdvertisementDao) {
                 )
 
                 call.respond(
-                    status = HttpStatusCode.Created, message =
-                    PostResponse(
+                    status = HttpStatusCode.Created,
+                    message = PostResponse(
                         message = "Başarılı bir şekilde eklendi!",
                         status = true
                     )
