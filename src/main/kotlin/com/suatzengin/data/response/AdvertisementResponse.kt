@@ -11,6 +11,7 @@ data class AdvertisementResponse(
     val category: Int,
     val images: Array<String>,
     val location: Location,
+    val address: String,
     val isCompleted: Boolean,
     val createdAt: String
 )

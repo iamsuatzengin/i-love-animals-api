@@ -7,5 +7,6 @@ data class UpdateAdRequest(
     val title: String,
     val description: String,
     val category: Int,
+    val address: String,
     val isCompleted: Boolean
 )

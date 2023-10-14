@@ -19,6 +19,7 @@ data class Advertisement(
     val images: Array<String>,
     val longitude: String,
     val latitude: String,
+    val address: String,
     val isCompleted: Boolean,
     val createdAt: LocalDateTime
 ) {
@@ -33,6 +34,7 @@ data class Advertisement(
             longitude = longitude,
             latitude = latitude
         ),
+        address = address,
         isCompleted = isCompleted,
         createdAt = createdAt.toString()
     )
@@ -46,12 +48,15 @@ object AdvertisementTable : Table() {
         onDelete = ReferenceOption.CASCADE, fkName = "fk_creator_id"
     )
     val title = varchar(name = "title", length = 200)
-    val description = text("description")
-    val category = integer("category")
-    val images = array<String>("images", TextColumnType())
-    val longitude = text("longitude")
-    val latitude = text("latitude")
-    val isCompleted = bool("is_completed")
-    val createdAt = datetime("created_at")
+    val description = text(name = "description")
+    val category = integer(name = "category")
+    val images = array<String>(name = "images", TextColumnType())
+    val longitude = text(name = "longitude")
+    val latitude = text(name = "latitude")
+    val isCompleted = bool(name = "is_completed")
+    val createdAt = datetime(name = "created_at")
+    val address = text(name = "address")
+
+    override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 

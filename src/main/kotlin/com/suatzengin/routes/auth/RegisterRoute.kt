@@ -2,7 +2,7 @@ package com.suatzengin.routes.auth
 
 import com.suatzengin.data.auth.AuthDao
 import com.suatzengin.data.request.auth.RegisterRequest
-import com.suatzengin.data.response.PostResponse
+import com.suatzengin.data.response.MessageResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -17,7 +17,7 @@ fun Route.registerRoute(dao: AuthDao) {
             dao.register(registerRequest = requestBody)
             call.respond(
                 status = HttpStatusCode.Created,
-                message = PostResponse(
+                message = MessageResponse(
                     message = "Başarılı bir şekilde kayıt olundu!",
                     status = true
                 )
@@ -25,7 +25,7 @@ fun Route.registerRoute(dao: AuthDao) {
         }.onFailure {
             call.respond(
                 status = HttpStatusCode.BadRequest,
-                message = PostResponse(
+                message = MessageResponse(
                     message = it.message ?: "Bir hatayla karşılaşıldı",
                     status = true
                 )

@@ -2,6 +2,7 @@ package com.suatzengin.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.suatzengin.data.response.MessageResponse
 import com.suatzengin.util.extensions.configureJWTConfig
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -28,7 +29,13 @@ fun Application.configureSecurity() {
             }
 
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                call.respond(
+                    HttpStatusCode.Unauthorized,
+                    MessageResponse(
+                        message = "Token is not valid or has expired",
+                        status = false
+                    )
+                )
             }
         }
     }

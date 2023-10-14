@@ -10,4 +10,5 @@ data class AdvertisementRequest(
     val images: Array<String>,
     val longitude: String,
     val latitude: String,
+    val address: String,
 )

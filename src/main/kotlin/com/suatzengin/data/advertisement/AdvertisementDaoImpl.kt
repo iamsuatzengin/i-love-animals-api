@@ -22,7 +22,8 @@ class AdvertisementDaoImpl : AdvertisementDao {
         longitude = row[AdvertisementTable.longitude],
         latitude = row[AdvertisementTable.latitude],
         isCompleted = row[AdvertisementTable.isCompleted],
-        createdAt = row[AdvertisementTable.createdAt]
+        createdAt = row[AdvertisementTable.createdAt],
+        address = row[AdvertisementTable.address]
     )
 
     override suspend fun getAdvertisement(): List<Advertisement> = dbQuery {
@@ -47,6 +48,7 @@ class AdvertisementDaoImpl : AdvertisementDao {
             statement[images] = advertisementRequest.images
             statement[longitude] = advertisementRequest.longitude
             statement[latitude] = advertisementRequest.latitude
+            statement[address] = advertisementRequest.address
             statement[isCompleted] = false
             statement[createdAt] = LocalDateTime.now()
         }
@@ -57,6 +59,7 @@ class AdvertisementDaoImpl : AdvertisementDao {
             updateStatement[title] = updateAdRequest.title
             updateStatement[description] = updateAdRequest.description
             updateStatement[category] = updateAdRequest.category
+            updateStatement[address] = updateAdRequest.address
             updateStatement[isCompleted] = updateAdRequest.isCompleted
         } > 0
     }

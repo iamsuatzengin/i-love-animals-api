@@ -8,6 +8,7 @@ servers:
 tags:
   - name: Auth
   - name: Advertisement
+  - name: Advertisement Comments
 paths:
   /register:
     post:
@@ -26,7 +27,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostResponse"
+                $ref: "#/components/schemas/MessageResponse"
 
   /login:
     post:
@@ -45,12 +46,12 @@ paths:
           content:
             application/json:
               schema:
-               $ref: "#/components/schemas/LoginResponse"
+                $ref: "#/components/schemas/LoginResponse"
 
   /advertisement-list:
     get:
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - Advertisement
       summary: "Advertisement List"
@@ -62,10 +63,32 @@ paths:
               schema:
                 $ref: "#/components/schemas/AdvertisementResponse"
 
+
+  /add-advertisement:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement
+      summary: "Add new advertisement"
+      requestBody:
+        description: Add new advertisement
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvertisementRequest"
+      responses:
+        200:
+          description: "Successfully added new advertisement!"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
   /advertisement/{id}:
     get:
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - Advertisement
       parameters:
@@ -85,7 +108,7 @@ paths:
 
     put:
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - Advertisement
       parameters:
@@ -113,7 +136,7 @@ paths:
 
     delete:
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - Advertisement
       parameters:
@@ -133,26 +156,98 @@ paths:
                 example: "Başarılı bir şekilde güncellendi."
 
 
-  /add-advertisement:
-    post:
+  /advertisement/{id}/comments:
+    get:
       security:
         - bearerAuth: []
       tags:
-        - Advertisement
-      summary: "Add new advertisement"
-      requestBody:
-        description: Add new advertisement
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AdvertisementRequest"
+        - Advertisement Comments
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The advertisement UUID
       responses:
         200:
-          description: "Successfully added new advertisement!"
+          description: Advertisement comment list
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PostResponse"
+                $ref: "#/components/schemas/AdvertisementCommentResponse"
+
+  /advertisement/{id}/comment:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement Comments
+      summary: "Add new comment for an advertisement"
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The advertisement UUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvertisementCommentRequest"
+      responses:
+        200:
+          description: "Successfully added new advertisement comment"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /comment/{commentId}:
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement Comments
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+          description: Comment ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdvertisementCommentRequest"
+      responses:
+        200:
+          description: "Successfully added new advertisement comment"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+    delete:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement Comments
+      parameters:
+        - in: path
+          name: commentId
+          required: true
+          schema:
+            type: string
+          description: Comment ID
+      responses:
+        200:
+          description: "Successfully added new advertisement comment"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
 
 
 components:
@@ -170,7 +265,7 @@ components:
           type: string
         profileImageUrl:
           type: string
-    PostResponse:
+    MessageResponse:
       type: object
       properties:
         message:
@@ -212,6 +307,8 @@ components:
             type: string
         location:
           $ref: "#/components/schemas/Location"
+        address:
+          type: string
         isCompleted:
           type: boolean
         createdAt:
@@ -241,6 +338,8 @@ components:
           type: string
         latitude:
           type: string
+        address:
+          type: string
     UpdateAdvertisementRequest:
       type: object
       properties:
@@ -250,8 +349,26 @@ components:
           type: string
         category:
           type: integer
+        address:
+          type: string
         isCompleted:
           type: boolean
+    AdvertisementCommentResponse:
+      type: object
+      properties:
+        commentId:
+          type: number
+        comment:
+          type: string
+        advertisementId:
+          type: string
+        userId:
+          type: string
+    AdvertisementCommentRequest:
+      type: object
+      properties:
+        comment:
+          type: string
 
   securitySchemes:
     bearerAuth:

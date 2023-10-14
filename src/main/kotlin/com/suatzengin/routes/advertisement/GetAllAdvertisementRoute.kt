@@ -7,7 +7,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getAllAdvertisementRoute(dao: AdvertisementDao) {
+fun Route.getAllAdvertisement(dao: AdvertisementDao) {
     authenticate {
         get("/advertisement-list") {
             runCatching {
