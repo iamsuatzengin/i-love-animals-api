@@ -1,6 +1,6 @@
 package com.suatzengin.routes.auth
 
-import com.suatzengin.data.auth.AuthDao
+import com.suatzengin.data.dao.auth.AuthDao
 import com.suatzengin.data.request.auth.LoginRequest
 import com.suatzengin.data.response.LoginResponse
 import com.suatzengin.util.exception.AuthenticationException

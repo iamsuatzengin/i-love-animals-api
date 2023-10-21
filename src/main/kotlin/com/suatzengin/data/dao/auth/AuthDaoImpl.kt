@@ -1,4 +1,4 @@
-package com.suatzengin.data.auth
+package com.suatzengin.data.dao.auth
 
 import com.suatzengin.data.request.auth.RegisterRequest
 import com.suatzengin.model.User
@@ -7,8 +7,9 @@ import com.suatzengin.util.extensions.dbQuery
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
+import java.util.UUID
 
-class AuthDaoImpl: AuthDao {
+class AuthDaoImpl : AuthDao {
 
     private fun resultRowToUser(row: ResultRow) = User(
         id = row[UserTable.id],
@@ -19,10 +20,10 @@ class AuthDaoImpl: AuthDao {
         profileImageUrl = row[UserTable.profileImageUrl]
     )
 
-    override suspend fun register(registerRequest: RegisterRequest) = dbQuery {
+    override suspend fun register(registerRequest: RegisterRequest): UUID = dbQuery {
         val userEmail = findUserByEmail(email = registerRequest.email)
 
-        if(userEmail != null) throw Exception("This user already exist!")
+        if (userEmail != null) throw Exception("This user already exist!")
 
         val insertStatement = UserTable.insert { insertStatement ->
             insertStatement[fullName] = registerRequest.fullName
@@ -31,6 +32,8 @@ class AuthDaoImpl: AuthDao {
             insertStatement[phoneNumber] = registerRequest.phoneNumber
             insertStatement[profileImageUrl] = registerRequest.profileImageUrl
         }
+
+        insertStatement[UserTable.id]
     }
 
     override suspend fun findUserByEmail(email: String): User? = dbQuery {

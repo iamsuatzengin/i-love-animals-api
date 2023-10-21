@@ -1,8 +1,10 @@
 package com.suatzengin.plugins
 
-import com.suatzengin.data.adcomment.AdCommentDao
-import com.suatzengin.data.advertisement.AdvertisementDao
-import com.suatzengin.data.auth.AuthDao
+import com.suatzengin.data.dao.adcomment.AdCommentDao
+import com.suatzengin.data.dao.advertisement.AdvertisementDao
+import com.suatzengin.data.dao.auth.AuthDao
+import com.suatzengin.data.dao.charityscore.CharityScoreDao
+import com.suatzengin.data.dao.profile.ProfileDao
 import com.suatzengin.routes.adcomments.addAdvertisementComment
 import com.suatzengin.routes.adcomments.deleteAdvertisementComment
 import com.suatzengin.routes.adcomments.getAdvertisementComments
@@ -19,12 +21,14 @@ fun Application.configureRouting() {
     val authDao by inject<AuthDao>()
     val advertisementDao by inject<AdvertisementDao>()
     val adCommentDao by inject<AdCommentDao>()
+    val profileDao by inject<ProfileDao>()
+    val charityScoreDao by inject<CharityScoreDao>()
     val jwtConfig = configureJWTConfig()
 
     routing {
 
         // Auth routes
-        registerRoute(dao = authDao)
+        registerRoute(authDao = authDao, profileDao = profileDao)
         loginRoute(dao = authDao, jwtConfig = jwtConfig)
 
         // Advertisement routes

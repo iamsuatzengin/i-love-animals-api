@@ -1,6 +1,6 @@
 package com.suatzengin.routes.adcomments
 
-import com.suatzengin.data.adcomment.AdCommentDao
+import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.response.MessageResponse
 import io.ktor.http.*
 import io.ktor.server.application.*

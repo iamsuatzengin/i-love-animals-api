@@ -1,8 +1,6 @@
 package com.suatzengin.plugins
 
-import com.suatzengin.model.AdCommentTable
-import com.suatzengin.model.AdvertisementTable
-import com.suatzengin.model.UserTable
+import com.suatzengin.model.*
 import io.ktor.server.application.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -26,5 +24,7 @@ fun Application.configureDatabases() {
         SchemaUtils.create(UserTable)
         SchemaUtils.create(AdvertisementTable)
         SchemaUtils.create(AdCommentTable)
+        SchemaUtils.create(ProfileTable)
+        SchemaUtils.create(CharityScoreTable)
     }
 }

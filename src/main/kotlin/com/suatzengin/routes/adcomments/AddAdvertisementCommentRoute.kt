@@ -1,6 +1,6 @@
 package com.suatzengin.routes.adcomments
 
-import com.suatzengin.data.adcomment.AdCommentDao
+import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.request.adcomment.AdvertisementCommentRequest
 import com.suatzengin.data.response.MessageResponse
 import com.suatzengin.util.exception.AuthenticationException

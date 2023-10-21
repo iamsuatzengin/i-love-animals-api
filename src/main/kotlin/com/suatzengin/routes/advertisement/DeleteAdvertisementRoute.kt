@@ -1,6 +1,6 @@
 package com.suatzengin.routes.advertisement
 
-import com.suatzengin.data.advertisement.AdvertisementDao
+import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
