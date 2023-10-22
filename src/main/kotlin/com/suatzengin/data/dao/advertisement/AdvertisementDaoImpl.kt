@@ -1,4 +1,4 @@
-package com.suatzengin.data.advertisement
+package com.suatzengin.data.dao.advertisement
 
 import com.suatzengin.data.request.advertisement.AdvertisementRequest
 import com.suatzengin.data.request.advertisement.UpdateAdRequest
@@ -8,11 +8,11 @@ import com.suatzengin.util.extensions.dbQuery
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.time.LocalDateTime
-import java.util.UUID
+import java.util.*
 
 class AdvertisementDaoImpl : AdvertisementDao {
 
-    private fun resultRow(row: ResultRow) = Advertisement(
+    override fun resultRow(row: ResultRow) = Advertisement(
         id = row[AdvertisementTable.id],
         creatorId = row[AdvertisementTable.creatorId],
         title = row[AdvertisementTable.title],

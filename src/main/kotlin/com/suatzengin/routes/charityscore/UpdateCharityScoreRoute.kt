@@ -1,7 +1,7 @@
-package com.suatzengin.routes.advertisement
+package com.suatzengin.routes.charityscore
 
-import com.suatzengin.data.dao.advertisement.AdvertisementDao
-import com.suatzengin.data.request.advertisement.UpdateAdRequest
+import com.suatzengin.data.dao.charityscore.CharityScoreDao
+import com.suatzengin.data.request.charityscore.UpdateScoreRequest
 import com.suatzengin.data.response.MessageResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -9,19 +9,14 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.util.*
 
-fun Route.updateAdvertisement(dao: AdvertisementDao) {
+fun Route.updateCharityScore(charityScoreDao: CharityScoreDao) {
     authenticate {
-        put("/advertisement/{id}") {
-            runCatching {
-                val requestBody = call.receive<UpdateAdRequest>()
-                val id = call.parameters["id"]
+        put("/charity-score") {
 
-                val isUpdated = dao.updateAdvertisement(
-                    id = UUID.fromString(id),
-                    updateAdRequest = requestBody
-                )
+            runCatching {
+                val requestBody = call.receive<UpdateScoreRequest>()
+                val isUpdated = charityScoreDao.updateUserCharityScore(request = requestBody)
 
                 call.respond(
                     status = if (isUpdated) HttpStatusCode.OK else HttpStatusCode.BadRequest,
@@ -30,6 +25,7 @@ fun Route.updateAdvertisement(dao: AdvertisementDao) {
                         status = isUpdated
                     )
                 )
+
             }.onFailure {
                 call.respond(
                     status = HttpStatusCode.BadRequest,

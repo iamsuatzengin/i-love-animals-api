@@ -1,4 +1,4 @@
-package com.suatzengin.data.adcomment
+package com.suatzengin.data.dao.adcomment
 
 import com.suatzengin.data.request.adcomment.AdvertisementCommentRequest
 import com.suatzengin.model.AdComment

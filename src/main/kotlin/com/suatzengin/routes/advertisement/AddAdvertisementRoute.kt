@@ -1,6 +1,6 @@
 package com.suatzengin.routes.advertisement
 
-import com.suatzengin.data.advertisement.AdvertisementDao
+import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.request.advertisement.AdvertisementRequest
 import com.suatzengin.data.response.MessageResponse
 import com.suatzengin.util.exception.AuthenticationException

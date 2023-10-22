@@ -7,8 +7,10 @@ servers:
   - url: "http://127.0.0.1:8080"
 tags:
   - name: Auth
+  - name: User Profile
   - name: Advertisement
   - name: Advertisement Comments
+  - name: Charity Score
 paths:
   /register:
     post:
@@ -47,6 +49,52 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LoginResponse"
+
+  /user/{userId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - User Profile
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User UUID
+      responses:
+        200:
+          description: User Profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileResponse"
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - User Profile
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: User UUID
+      requestBody:
+        description: Update Request Object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        200:
+          description: "Successfully updated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
 
   /advertisement-list:
     get:
@@ -127,12 +175,11 @@ paths:
 
       responses:
         200:
-          description: An advertisement by ID
+          description: "Successfully updated advertisement!"
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: "Başarılı bir şekilde güncellendi."
+                $ref: "#/components/schemas/MessageResponse"
 
     delete:
       security:
@@ -148,12 +195,11 @@ paths:
           description: The advertisement UUID
       responses:
         200:
-          description: An advertisement by ID
+          description: "Successfully deleted advertisement!"
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
-                example: "Başarılı bir şekilde güncellendi."
+                $ref: "#/components/schemas/MessageResponse"
 
 
   /advertisement/{id}/comments:
@@ -224,7 +270,7 @@ paths:
               $ref: "#/components/schemas/AdvertisementCommentRequest"
       responses:
         200:
-          description: "Successfully added new advertisement comment"
+          description: "Successfully updated advertisement comment"
           content:
             application/json:
               schema:
@@ -243,12 +289,42 @@ paths:
           description: Comment ID
       responses:
         200:
-          description: "Successfully added new advertisement comment"
+          description: "Successfully deleted advertisement comment"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /charity-score:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Charity Score
+      responses:
+        200:
+          description: Charity Score Table
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CharityScore"
+    put:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Charity Score
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateScoreRequest"
+      responses:
+        200:
+          description: "Successfully updated charity score"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
 
 components:
   schemas:
@@ -369,6 +445,67 @@ components:
       properties:
         comment:
           type: string
+    ProfileResponse:
+      type: object
+      properties:
+        profileId:
+          type: integer
+        userId:
+          type: string
+        fullName:
+          type: string
+        email:
+          type: string
+        phoneNumber:
+          type: string
+        profileImageUrl:
+          type: string
+        charityScorePoint:
+          type: integer
+        bio:
+          type: string
+          default: null
+        twitterLink:
+          type: string
+          default: null
+        instagramLink:
+          type: string
+          default: null
+    UpdateProfileRequest:
+      type: object
+      properties:
+        bio:
+          type: string
+          default: null
+        twitterLink:
+          type: string
+          default: null
+        instagramLink:
+          type: string
+          default: null
+    CharityScore:
+      type: object
+      properties:
+        id:
+          type: integer
+        userId:
+          type: string
+        userMail:
+          type: string
+        userFullName:
+          type: string
+        userImageUrl:
+          type: string
+        point:
+          type: integer
+    UpdateScoreRequest:
+      type: object
+      properties:
+        userId:
+          type: string
+        point:
+          type: integer
+
 
   securitySchemes:
     bearerAuth:

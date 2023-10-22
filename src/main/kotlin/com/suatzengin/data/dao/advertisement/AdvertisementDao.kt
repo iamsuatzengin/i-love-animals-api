@@ -1,11 +1,12 @@
-package com.suatzengin.data.advertisement
+package com.suatzengin.data.dao.advertisement
 
+import com.suatzengin.data.dao.Dao
 import com.suatzengin.data.request.advertisement.AdvertisementRequest
 import com.suatzengin.data.request.advertisement.UpdateAdRequest
 import com.suatzengin.model.Advertisement
 import java.util.UUID
 
-interface AdvertisementDao {
+interface AdvertisementDao: Dao<Advertisement> {
     suspend fun getAdvertisement(): List<Advertisement>
 
     suspend fun getAdvertisementById(id: UUID): Advertisement
