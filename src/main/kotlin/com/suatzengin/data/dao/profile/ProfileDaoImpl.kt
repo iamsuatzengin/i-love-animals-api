@@ -15,20 +15,17 @@ import java.util.*
 class ProfileDaoImpl : ProfileDao {
 
     override suspend fun getUserProfile(userId: UUID): ProfileResponse = dbQuery {
-
-        ProfileTable
-            .join(
-                otherTable = UserTable,
-                joinType = JoinType.INNER,
-                onColumn = ProfileTable.userId,
-                otherColumn = UserTable.id
-            )
-            .join(
-                otherTable = CharityScoreTable,
-                joinType = JoinType.INNER,
-                onColumn = ProfileTable.userId,
-                otherColumn = CharityScoreTable.userId
-            )
+        ProfileTable.join(
+            otherTable = UserTable,
+            joinType = JoinType.INNER,
+            onColumn = ProfileTable.userId,
+            otherColumn = UserTable.id
+        ).join(
+            otherTable = CharityScoreTable,
+            joinType = JoinType.INNER,
+            onColumn = ProfileTable.userId,
+            otherColumn = CharityScoreTable.userId
+        )
             .select { ProfileTable.userId eq userId }
             .map(::resultRow)
             .single()

@@ -12,7 +12,7 @@ interface ProfileDao : Dao<ProfileResponse> {
 
     override fun resultRow(row: ResultRow): ProfileResponse = ProfileResponse(
         profileId = row[ProfileTable.profileId],
-        userId = row[ProfileTable.userId],
+        userId = row[ProfileTable.userId].toString(),
         fullName = row[UserTable.fullName],
         email = row[UserTable.email],
         phoneNumber = row[UserTable.phoneNumber],

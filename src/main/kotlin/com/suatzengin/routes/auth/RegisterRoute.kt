@@ -1,6 +1,7 @@
 package com.suatzengin.routes.auth
 
 import com.suatzengin.data.dao.auth.AuthDao
+import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.dao.profile.ProfileDao
 import com.suatzengin.data.request.auth.RegisterRequest
 import com.suatzengin.data.response.MessageResponse
@@ -13,14 +14,20 @@ import kotlinx.coroutines.async
 
 fun Route.registerRoute(
     authDao: AuthDao,
-    profileDao: ProfileDao
+    profileDao: ProfileDao,
+    charityScoreDao: CharityScoreDao
 ) {
     post("register") {
         val requestBody = call.receive<RegisterRequest>()
 
         runCatching {
-            val createdUserId = async { authDao.register(registerRequest = requestBody) }
-            profileDao.createUserProfile(userId = createdUserId.await())
+            val createdUserId = authDao.register(registerRequest = requestBody)
+
+            val deferredCreateUserProfile = async { profileDao.createUserProfile(userId = createdUserId) }
+            val deferredAddCharityScore = async { charityScoreDao.addUserCharityScoreTable(userId = createdUserId) }
+
+            deferredCreateUserProfile.await()
+            deferredAddCharityScore.await()
 
             call.respond(
                 status = HttpStatusCode.Created,

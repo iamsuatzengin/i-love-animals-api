@@ -12,6 +12,10 @@ import com.suatzengin.routes.adcomments.updateAdvertisementComment
 import com.suatzengin.routes.advertisement.*
 import com.suatzengin.routes.auth.loginRoute
 import com.suatzengin.routes.auth.registerRoute
+import com.suatzengin.routes.charityscore.getCharityScores
+import com.suatzengin.routes.charityscore.updateCharityScore
+import com.suatzengin.routes.profile.getUserProfile
+import com.suatzengin.routes.profile.updateUserProfile
 import com.suatzengin.util.extensions.configureJWTConfig
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -28,7 +32,11 @@ fun Application.configureRouting() {
     routing {
 
         // Auth routes
-        registerRoute(authDao = authDao, profileDao = profileDao)
+        registerRoute(
+            authDao = authDao,
+            profileDao = profileDao,
+            charityScoreDao = charityScoreDao
+        )
         loginRoute(dao = authDao, jwtConfig = jwtConfig)
 
         // Advertisement routes
@@ -43,5 +51,13 @@ fun Application.configureRouting() {
         addAdvertisementComment(dao = adCommentDao)
         updateAdvertisementComment(dao = adCommentDao)
         deleteAdvertisementComment(dao = adCommentDao)
+
+        // User profile
+        getUserProfile(profileDao = profileDao)
+        updateUserProfile(profileDao = profileDao)
+
+        // Charity score
+        getCharityScores(charityScoreDao = charityScoreDao)
+        updateCharityScore(charityScoreDao = charityScoreDao)
     }
 }

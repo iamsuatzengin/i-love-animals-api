@@ -1,12 +1,13 @@
 package com.suatzengin.model
 
+import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.Table
-import java.util.UUID
 
+@Serializable
 data class CharityScore(
     val id: Int,
-    val userId: UUID,
+    val userId: String,
     val point: Long,
 )
 

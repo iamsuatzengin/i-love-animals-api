@@ -1,10 +1,11 @@
 package com.suatzengin.data.response
 
-import java.util.*
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ProfileResponse(
     val profileId: Int,
-    val userId: UUID,
+    val userId: String,
     val fullName: String,
     val email: String,
     val phoneNumber: String,

@@ -1,6 +1,7 @@
 package com.suatzengin.routes.advertisement
 
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
+import com.suatzengin.data.response.MessageResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -19,7 +20,18 @@ fun Route.deleteAdvertisement(dao: AdvertisementDao) {
 
                 call.respond(
                     status = if (isDeleted) HttpStatusCode.OK else HttpStatusCode.BadRequest,
-                    message = if (isDeleted) "Başarılı bir şekilde silindi." else "Silinirken hata meydana geldi!"
+                    message = MessageResponse(
+                        message = if (isDeleted) "Başarılı bir şekilde silindi." else "Silinirken hata meydana geldi!",
+                        status = isDeleted
+                    )
+                )
+            }.onFailure {
+                call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message = MessageResponse(
+                        message = it.message ?: "Bir hatayla karşılaşıldı",
+                        status = false
+                    )
                 )
             }
         }

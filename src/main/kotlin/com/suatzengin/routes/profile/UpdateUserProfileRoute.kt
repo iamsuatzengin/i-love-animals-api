@@ -1,7 +1,7 @@
-package com.suatzengin.routes.advertisement
+package com.suatzengin.routes.profile
 
-import com.suatzengin.data.dao.advertisement.AdvertisementDao
-import com.suatzengin.data.request.advertisement.UpdateAdRequest
+import com.suatzengin.data.dao.profile.ProfileDao
+import com.suatzengin.data.request.profile.UpdateProfileRequest
 import com.suatzengin.data.response.MessageResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -11,16 +11,16 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.*
 
-fun Route.updateAdvertisement(dao: AdvertisementDao) {
+fun Route.updateUserProfile(profileDao: ProfileDao) {
     authenticate {
-        put("/advertisement/{id}") {
+        put("/user/{userId}") {
             runCatching {
-                val requestBody = call.receive<UpdateAdRequest>()
-                val id = call.parameters["id"]
+                val userId = call.parameters["userId"] ?: throw Exception("Kullanıcı bulanamadı")
+                val requestBody = call.receive<UpdateProfileRequest>()
 
-                val isUpdated = dao.updateAdvertisement(
-                    id = UUID.fromString(id),
-                    updateAdRequest = requestBody
+                val isUpdated = profileDao.updateUserProfile(
+                    userId = UUID.fromString(userId),
+                    request = requestBody
                 )
 
                 call.respond(
@@ -30,6 +30,7 @@ fun Route.updateAdvertisement(dao: AdvertisementDao) {
                         status = isUpdated
                     )
                 )
+
             }.onFailure {
                 call.respond(
                     status = HttpStatusCode.BadRequest,
