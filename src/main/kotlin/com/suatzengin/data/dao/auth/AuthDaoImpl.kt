@@ -23,7 +23,7 @@ class AuthDaoImpl : AuthDao {
     override suspend fun register(registerRequest: RegisterRequest): UUID = dbQuery {
         val userEmail = findUserByEmail(email = registerRequest.email)
 
-        if (userEmail != null) throw Exception("This user already exist!")
+        if (userEmail != null) throw Exception("Böyle bir kullanıcı zaten var!")
 
         val insertStatement = UserTable.insert { insertStatement ->
             insertStatement[fullName] = registerRequest.fullName
