@@ -6,6 +6,7 @@ val postgres_version : String by project
 val exposed_version: String by project
 val h2_version: String by project
 val koin_version: String by project
+val firebase_admin_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.10"
@@ -44,11 +45,14 @@ dependencies {
 
     implementation("com.h2database:h2:$h2_version")
 
+    implementation("com.google.firebase:firebase-admin:$firebase_admin_version")
+
     implementation("io.ktor:ktor-server-swagger-jvm")
     implementation("io.ktor:ktor-server-auth-jvm")
     implementation("io.ktor:ktor-server-auth-jwt-jvm")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("io.ktor:ktor-server-default-headers-jvm:2.3.4")
 
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
