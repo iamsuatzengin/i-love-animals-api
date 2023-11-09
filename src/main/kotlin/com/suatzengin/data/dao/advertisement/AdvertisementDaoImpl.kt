@@ -39,6 +39,17 @@ class AdvertisementDaoImpl : AdvertisementDao {
             .single()
     }
 
+    override suspend fun searchAdvertisement(keyword: String) = dbQuery {
+        AdvertisementTable.select {
+            (AdvertisementTable.title.lowerCase() like "%${keyword.lowercase()}%").or(
+                AdvertisementTable.description.lowerCase() like "%${keyword.lowercase()}%"
+            )
+        }
+            .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
+            .map { row -> resultRow(row) }
+            .toList()
+    }
+
     override suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String) = dbQuery {
         val insertStatement = AdvertisementTable.insert { statement ->
             statement[creatorId] = UUID.fromString(userId)

@@ -9,6 +9,7 @@ tags:
   - name: Auth
   - name: User Profile
   - name: Advertisement
+  - name: Search
   - name: Advertisement Comments
   - name: Charity Score
 paths:
@@ -201,11 +202,32 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /search?key={keyword}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Search
+      parameters:
+        - in: path
+          name: keyword
+          required: true
+          schema:
+            type: string
+          description: Keyword
+      summary: "Search Advertisement"
+      responses:
+        200:
+          description: Searched Advertisement List
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertisementResponse"
 
   /advertisement/{id}/comments:
     get:
       security:
-        - bearerAuth: []
+        - bearerAuth: [ ]
       tags:
         - Advertisement Comments
       parameters:

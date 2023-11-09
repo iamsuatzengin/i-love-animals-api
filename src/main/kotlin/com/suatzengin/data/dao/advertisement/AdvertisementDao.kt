@@ -6,10 +6,12 @@ import com.suatzengin.data.request.advertisement.UpdateAdRequest
 import com.suatzengin.model.Advertisement
 import java.util.UUID
 
-interface AdvertisementDao: Dao<Advertisement> {
+interface AdvertisementDao : Dao<Advertisement> {
     suspend fun getAdvertisement(): List<Advertisement>
 
     suspend fun getAdvertisementById(id: UUID): Advertisement
+
+    suspend fun searchAdvertisement(keyword: String): List<Advertisement>
 
     suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String)
 
