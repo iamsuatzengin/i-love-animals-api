@@ -112,6 +112,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/AdvertisementResponse"
 
+  /advertisement-list/{category}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement
+      summary: "Advertisement List by Category"
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: integer
+          description: Category
+      responses:
+        200:
+          description: "Advertisement List"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertisementResponse"
 
   /add-advertisement:
     post:
@@ -202,15 +223,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
-  /search?key={keyword}:
+  /search:
     get:
       security:
         - bearerAuth: [ ]
       tags:
         - Search
       parameters:
-        - in: path
-          name: keyword
+        - in: query
+          name: key
           required: true
           schema:
             type: string

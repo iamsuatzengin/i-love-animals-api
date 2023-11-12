@@ -13,6 +13,8 @@ interface AdvertisementDao : Dao<Advertisement> {
 
     suspend fun searchAdvertisement(keyword: String): List<Advertisement>
 
+    suspend fun getAdvertisementByCategory(category: Int): List<Advertisement>
+
     suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String)
 
     suspend fun updateAdvertisement(id: UUID, updateAdRequest: UpdateAdRequest): Boolean

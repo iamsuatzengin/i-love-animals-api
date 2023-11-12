@@ -50,6 +50,12 @@ class AdvertisementDaoImpl : AdvertisementDao {
             .toList()
     }
 
+    override suspend fun getAdvertisementByCategory(category: Int): List<Advertisement> = dbQuery {
+        AdvertisementTable.select {
+            AdvertisementTable.category eq category
+        }.map (::resultRow).toList()
+    }
+
     override suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String) = dbQuery {
         val insertStatement = AdvertisementTable.insert { statement ->
             statement[creatorId] = UUID.fromString(userId)

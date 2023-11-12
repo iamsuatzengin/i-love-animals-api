@@ -16,6 +16,7 @@ import com.suatzengin.routes.charityscore.getCharityScores
 import com.suatzengin.routes.charityscore.updateCharityScore
 import com.suatzengin.routes.profile.getUserProfile
 import com.suatzengin.routes.profile.updateUserProfile
+import com.suatzengin.routes.search.getAdvertisementByCategory
 import com.suatzengin.routes.search.searchAdvertisement
 import com.suatzengin.util.extensions.configureJWTConfig
 import io.ktor.server.application.*
@@ -46,6 +47,9 @@ fun Application.configureRouting() {
         getAdvertisement(dao = advertisementDao)
         updateAdvertisement(dao = advertisementDao)
         deleteAdvertisement(dao = advertisementDao)
+
+        // Advertisement by category
+        getAdvertisementByCategory(dao = advertisementDao)
 
         // Search Advertisement
         searchAdvertisement(dao = advertisementDao)
