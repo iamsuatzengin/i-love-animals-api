@@ -45,6 +45,7 @@ fun Application.configureRouting() {
         getAllAdvertisement(dao = advertisementDao)
         addAdvertisement(dao = advertisementDao)
         getAdvertisement(dao = advertisementDao)
+        getUserAdvertisement(dao = advertisementDao)
         updateAdvertisement(dao = advertisementDao)
         deleteAdvertisement(dao = advertisementDao)
 

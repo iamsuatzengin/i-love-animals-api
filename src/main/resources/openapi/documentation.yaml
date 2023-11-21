@@ -223,6 +223,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /user-advertisement/{userId}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Advertisement
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: The user UUID
+      responses:
+        200:
+          description: User advertisement list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdvertisementResponse"
+
   /search:
     get:
       security:

@@ -39,6 +39,12 @@ class AdvertisementDaoImpl : AdvertisementDao {
             .single()
     }
 
+    override suspend fun getUserAdvertisement(userId: UUID): List<Advertisement> = dbQuery {
+        AdvertisementTable.select { AdvertisementTable.creatorId eq userId }
+            .map(::resultRow)
+            .toList()
+    }
+
     override suspend fun searchAdvertisement(keyword: String) = dbQuery {
         AdvertisementTable.select {
             (AdvertisementTable.title.lowerCase() like "%${keyword.lowercase()}%").or(
