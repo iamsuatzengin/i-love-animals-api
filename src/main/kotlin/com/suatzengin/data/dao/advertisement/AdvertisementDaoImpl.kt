@@ -41,6 +41,7 @@ class AdvertisementDaoImpl : AdvertisementDao {
 
     override suspend fun getUserAdvertisement(userId: UUID): List<Advertisement> = dbQuery {
         AdvertisementTable.select { AdvertisementTable.creatorId eq userId }
+            .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
             .map(::resultRow)
             .toList()
     }
@@ -59,7 +60,9 @@ class AdvertisementDaoImpl : AdvertisementDao {
     override suspend fun getAdvertisementByCategory(category: Int): List<Advertisement> = dbQuery {
         AdvertisementTable.select {
             AdvertisementTable.category eq category
-        }.map (::resultRow).toList()
+        }
+            .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
+            .map (::resultRow).toList()
     }
 
     override suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String) = dbQuery {
