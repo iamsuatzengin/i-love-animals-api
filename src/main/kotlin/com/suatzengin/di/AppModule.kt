@@ -10,6 +10,8 @@ import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.dao.charityscore.CharityScoreDaoImpl
 import com.suatzengin.data.dao.profile.ProfileDao
 import com.suatzengin.data.dao.profile.ProfileDaoImpl
+import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDao
+import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDaoImpl
 import org.koin.dsl.module
 
 val appModule = module {
@@ -18,4 +20,5 @@ val appModule = module {
     single<AdCommentDao> { AdCommentDaoImpl() }
     single<ProfileDao> { ProfileDaoImpl() }
     single<CharityScoreDao> { CharityScoreDaoImpl() }
+    single<VeterinaryClinicDao> { VeterinaryClinicDaoImpl() }
 }

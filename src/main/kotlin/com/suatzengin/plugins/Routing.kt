@@ -5,6 +5,7 @@ import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.dao.auth.AuthDao
 import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.dao.profile.ProfileDao
+import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDao
 import com.suatzengin.routes.adcomments.addAdvertisementComment
 import com.suatzengin.routes.adcomments.deleteAdvertisementComment
 import com.suatzengin.routes.adcomments.getAdvertisementComments
@@ -18,6 +19,8 @@ import com.suatzengin.routes.profile.getUserProfile
 import com.suatzengin.routes.profile.updateUserProfile
 import com.suatzengin.routes.search.getAdvertisementByCategory
 import com.suatzengin.routes.search.searchAdvertisement
+import com.suatzengin.routes.veterinaryclinic.addVeterinaryClinic
+import com.suatzengin.routes.veterinaryclinic.getVeterinaryClinics
 import com.suatzengin.util.extensions.configureJWTConfig
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -29,6 +32,7 @@ fun Application.configureRouting() {
     val adCommentDao by inject<AdCommentDao>()
     val profileDao by inject<ProfileDao>()
     val charityScoreDao by inject<CharityScoreDao>()
+    val veterinaryClinicDao by inject<VeterinaryClinicDao>()
     val jwtConfig = configureJWTConfig()
 
     routing {
@@ -68,5 +72,9 @@ fun Application.configureRouting() {
         // Charity score
         getCharityScores(charityScoreDao = charityScoreDao)
         updateCharityScore(charityScoreDao = charityScoreDao)
+
+        // Veterinary clinic
+        getVeterinaryClinics(dao = veterinaryClinicDao)
+        addVeterinaryClinic(dao = veterinaryClinicDao)
     }
 }

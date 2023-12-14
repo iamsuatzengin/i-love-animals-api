@@ -26,5 +26,6 @@ fun Application.configureDatabases() {
         SchemaUtils.create(AdCommentTable)
         SchemaUtils.create(ProfileTable)
         SchemaUtils.create(CharityScoreTable)
+        SchemaUtils.create(VeterinaryClinicTable)
     }
 }

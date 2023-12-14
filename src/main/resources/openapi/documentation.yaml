@@ -9,6 +9,7 @@ tags:
   - name: Auth
   - name: User Profile
   - name: Advertisement
+  - name: Veterinary Clinic
   - name: Search
   - name: Advertisement Comments
   - name: Charity Score
@@ -390,6 +391,44 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /clinics:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Veterinary Clinic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VeterinaryClinicRequest"
+      responses:
+        200:
+          description: "Successfully added the veterinary clinic"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /clinics/{postalCode}:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Veterinary Clinic
+      parameters:
+        - in: path
+          name: postalCode
+          required: true
+          schema:
+            type: string
+          description: Comment ID
+      responses:
+        200:
+          description: "Nearby Veterinary clinics"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VeterinaryClinic"
 components:
   schemas:
     RegisterModel:
@@ -569,6 +608,63 @@ components:
           type: string
         point:
           type: integer
+
+    VeterinaryClinic:
+      type: object
+      properties:
+        id:
+          type: number
+        clinicName:
+          type: string
+        doctorName:
+          type: string
+        longitude:
+          type: string
+        latitude:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        openTimes:
+          type: string
+        closeTimes:
+          type: string
+        isAmbulanceAvailable:
+          type: boolean
+        images:
+          type: array
+          items:
+            type: string
+        phoneNumber:
+          type: string
+    VeterinaryClinicRequest:
+      type: object
+      properties:
+        clinicName:
+          type: string
+        doctorName:
+          type: string
+        longitude:
+          type: string
+        latitude:
+          type: string
+        address:
+          type: string
+        postalCode:
+          type: string
+        openTimes:
+          type: string
+        closeTimes:
+          type: string
+        isAmbulanceAvailable:
+          type: boolean
+        images:
+          type: array
+          items:
+            type: string
+        phoneNumber:
+          type: string
 
 
   securitySchemes:
