@@ -20,6 +20,7 @@ data class Advertisement(
     val longitude: String,
     val latitude: String,
     val address: String,
+    val postalCode: String,
     val isCompleted: Boolean,
     val createdAt: LocalDateTime
 ) {
@@ -32,7 +33,8 @@ data class Advertisement(
         images = images,
         location = Location(
             longitude = longitude,
-            latitude = latitude
+            latitude = latitude,
+            postalCode = postalCode
         ),
         address = address,
         isCompleted = isCompleted,
@@ -56,6 +58,7 @@ object AdvertisementTable : Table() {
     val isCompleted = bool(name = "is_completed")
     val createdAt = datetime(name = "created_at")
     val address = text(name = "address")
+    val postalCode = varchar(name = "postal_code", length = 10)
 
     override val primaryKey: PrimaryKey = PrimaryKey(id)
 }

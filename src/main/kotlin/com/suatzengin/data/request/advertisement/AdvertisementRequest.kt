@@ -11,4 +11,5 @@ data class AdvertisementRequest(
     val longitude: String,
     val latitude: String,
     val address: String,
+    val postalCode: String,
 )

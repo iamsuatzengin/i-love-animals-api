@@ -20,6 +20,7 @@ import com.suatzengin.routes.profile.updateUserProfile
 import com.suatzengin.routes.search.getAdvertisementByCategory
 import com.suatzengin.routes.search.searchAdvertisement
 import com.suatzengin.routes.veterinaryclinic.addVeterinaryClinic
+import com.suatzengin.routes.veterinaryclinic.getAllVeterinaryClinics
 import com.suatzengin.routes.veterinaryclinic.getVeterinaryClinics
 import com.suatzengin.util.extensions.configureJWTConfig
 import io.ktor.server.application.*
@@ -47,6 +48,7 @@ fun Application.configureRouting() {
 
         // Advertisement routes
         getAllAdvertisement(dao = advertisementDao)
+        getAdvertisementsByPostalCode(dao = advertisementDao)
         addAdvertisement(dao = advertisementDao)
         getAdvertisement(dao = advertisementDao)
         getUserAdvertisement(dao = advertisementDao)
@@ -75,6 +77,7 @@ fun Application.configureRouting() {
 
         // Veterinary clinic
         getVeterinaryClinics(dao = veterinaryClinicDao)
+        getAllVeterinaryClinics(dao = veterinaryClinicDao)
         addVeterinaryClinic(dao = veterinaryClinicDao)
     }
 }

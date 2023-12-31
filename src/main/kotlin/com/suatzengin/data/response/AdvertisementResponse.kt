@@ -20,4 +20,5 @@ data class AdvertisementResponse(
 data class Location(
     val longitude: String,
     val latitude: String,
+    val postalCode: String,
 )

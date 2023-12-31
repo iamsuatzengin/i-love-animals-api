@@ -1,4 +1,4 @@
-package com.suatzengin.routes.search
+package com.suatzengin.routes.advertisement
 
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.response.MessageResponse
@@ -8,14 +8,12 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.getAdvertisementByCategory(dao: AdvertisementDao) {
+fun Route.getAdvertisementsByPostalCode(dao: AdvertisementDao) {
     authenticate {
-        get("/advertisement-list/filter") {
+        get("/advertisement-list/postalCode/{postalCode}") {
             runCatching {
-                val category = call.request.queryParameters["category"]?.toInt() ?: 0
-                val postalCode = call.request.queryParameters["postalCode"].orEmpty()
-
-                val list = dao.getAdvertisementByCategory(category = category, postalCode = postalCode)
+                val paramPostalCode = call.parameters["postalCode"].orEmpty()
+                val list = dao.getAdvertisementsByPostalCode(postalCode = paramPostalCode)
 
                 val response = list.map { advertisement ->
                     advertisement.toResponseModel()

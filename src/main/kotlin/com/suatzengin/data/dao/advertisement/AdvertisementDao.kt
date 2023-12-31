@@ -9,13 +9,15 @@ import java.util.UUID
 interface AdvertisementDao : Dao<Advertisement> {
     suspend fun getAdvertisement(): List<Advertisement>
 
+    suspend fun getAdvertisementsByPostalCode(postalCode: String): List<Advertisement>
+
     suspend fun getAdvertisementById(id: UUID): Advertisement
 
     suspend fun getUserAdvertisement(userId: UUID): List<Advertisement>
 
     suspend fun searchAdvertisement(keyword: String): List<Advertisement>
 
-    suspend fun getAdvertisementByCategory(category: Int): List<Advertisement>
+    suspend fun getAdvertisementByCategory(category: Int, postalCode: String?): List<Advertisement>
 
     suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String)
 

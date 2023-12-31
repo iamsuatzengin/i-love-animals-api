@@ -4,9 +4,7 @@ import com.suatzengin.data.request.veterinaryclinic.VeterinaryClinicRequest
 import com.suatzengin.model.VeterinaryClinic
 import com.suatzengin.model.VeterinaryClinicTable
 import com.suatzengin.util.extensions.dbQuery
-import org.jetbrains.exposed.sql.ResultRow
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.*
 
 class VeterinaryClinicDaoImpl : VeterinaryClinicDao {
 
@@ -24,6 +22,12 @@ class VeterinaryClinicDaoImpl : VeterinaryClinicDao {
         images = row[VeterinaryClinicTable.images],
         phoneNumber = row[VeterinaryClinicTable.phoneNumber]
     )
+
+    override suspend fun getAllVeterinaryClinics(): List<VeterinaryClinic> = dbQuery {
+        VeterinaryClinicTable.selectAll()
+            .map(::resultRow)
+            .toList()
+    }
 
     override suspend fun getVeterinaryClinics(postalCode: String): List<VeterinaryClinic> = dbQuery {
         VeterinaryClinicTable.select {

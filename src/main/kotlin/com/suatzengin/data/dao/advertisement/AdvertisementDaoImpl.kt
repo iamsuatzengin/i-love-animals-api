@@ -23,13 +23,21 @@ class AdvertisementDaoImpl : AdvertisementDao {
         latitude = row[AdvertisementTable.latitude],
         isCompleted = row[AdvertisementTable.isCompleted],
         createdAt = row[AdvertisementTable.createdAt],
-        address = row[AdvertisementTable.address]
+        address = row[AdvertisementTable.address],
+        postalCode = row[AdvertisementTable.postalCode]
     )
 
     override suspend fun getAdvertisement(): List<Advertisement> = dbQuery {
         AdvertisementTable.selectAll()
             .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
             .map { row -> resultRow(row) }
+            .toList()
+    }
+
+    override suspend fun getAdvertisementsByPostalCode(postalCode: String): List<Advertisement> = dbQuery {
+        AdvertisementTable.select { AdvertisementTable.postalCode eq postalCode }
+            .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
+            .map(::resultRow)
             .toList()
     }
 
@@ -57,12 +65,18 @@ class AdvertisementDaoImpl : AdvertisementDao {
             .toList()
     }
 
-    override suspend fun getAdvertisementByCategory(category: Int): List<Advertisement> = dbQuery {
-        AdvertisementTable.select {
+    override suspend fun getAdvertisementByCategory(category: Int, postalCode: String?): List<Advertisement> = dbQuery {
+        var query = AdvertisementTable.select {
             AdvertisementTable.category eq category
         }
-            .orderBy(AdvertisementTable.createdAt, SortOrder.DESC)
-            .map (::resultRow).toList()
+
+        if(!postalCode.isNullOrEmpty()) {
+            query = query.andWhere {
+                AdvertisementTable.postalCode eq postalCode
+            }
+        }
+
+        query.orderBy(AdvertisementTable.createdAt, SortOrder.DESC).map(::resultRow).toList()
     }
 
     override suspend fun addAdvertisement(advertisementRequest: AdvertisementRequest, userId: String) = dbQuery {
@@ -75,6 +89,7 @@ class AdvertisementDaoImpl : AdvertisementDao {
             statement[longitude] = advertisementRequest.longitude
             statement[latitude] = advertisementRequest.latitude
             statement[address] = advertisementRequest.address
+            statement[postalCode] = advertisementRequest.postalCode
             statement[isCompleted] = false
             statement[createdAt] = LocalDateTime.now()
         }
