@@ -1,5 +1,6 @@
 package com.suatzengin.di
 
+import com.suatzengin.data.dao.CompleteAdvertisementController
 import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.dao.adcomment.AdCommentDaoImpl
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
@@ -21,4 +22,8 @@ val appModule = module {
     single<ProfileDao> { ProfileDaoImpl() }
     single<CharityScoreDao> { CharityScoreDaoImpl() }
     single<VeterinaryClinicDao> { VeterinaryClinicDaoImpl() }
+    single { CompleteAdvertisementController(
+        advertisementDao = get(),
+        charityScoreDao = get()
+    ) }
 }

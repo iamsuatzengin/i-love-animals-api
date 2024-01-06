@@ -468,6 +468,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VeterinaryClinic"
+
+  /complete-advertisement:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Complete Advertisement
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CompleteAdvertisementRequest"
+      responses:
+        200:
+          description: "Successfully completed advertisement. Nice!"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
 components:
   schemas:
     RegisterModel:
@@ -708,7 +728,13 @@ components:
             type: string
         phoneNumber:
           type: string
-
+    CompleteAdvertisementRequest:
+      type: object
+      properties:
+        advertisementId:
+          type: string
+        creatorId:
+          type: string
 
   securitySchemes:
     bearerAuth:

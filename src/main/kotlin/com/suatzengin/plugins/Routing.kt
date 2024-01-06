@@ -1,5 +1,6 @@
 package com.suatzengin.plugins
 
+import com.suatzengin.data.dao.CompleteAdvertisementController
 import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.dao.auth.AuthDao
@@ -15,6 +16,7 @@ import com.suatzengin.routes.auth.loginRoute
 import com.suatzengin.routes.auth.registerRoute
 import com.suatzengin.routes.charityscore.getCharityScores
 import com.suatzengin.routes.charityscore.updateCharityScore
+import com.suatzengin.routes.completeadvertisement.completeAdvertisementRoute
 import com.suatzengin.routes.profile.getUserProfile
 import com.suatzengin.routes.profile.updateUserProfile
 import com.suatzengin.routes.search.getAdvertisementByCategory
@@ -35,6 +37,7 @@ fun Application.configureRouting() {
     val charityScoreDao by inject<CharityScoreDao>()
     val veterinaryClinicDao by inject<VeterinaryClinicDao>()
     val jwtConfig = configureJWTConfig()
+    val completeAdvertisementController: CompleteAdvertisementController by inject()
 
     routing {
 
@@ -79,5 +82,8 @@ fun Application.configureRouting() {
         getVeterinaryClinics(dao = veterinaryClinicDao)
         getAllVeterinaryClinics(dao = veterinaryClinicDao)
         addVeterinaryClinic(dao = veterinaryClinicDao)
+
+        // Complete Advertisement
+        completeAdvertisementRoute(controller = completeAdvertisementController)
     }
 }

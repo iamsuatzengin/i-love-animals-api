@@ -108,4 +108,10 @@ class AdvertisementDaoImpl : AdvertisementDao {
     override suspend fun deleteAdvertisement(id: UUID): Boolean = dbQuery {
         AdvertisementTable.deleteWhere { AdvertisementTable.id eq id } > 0
     }
+
+    override suspend fun updateIsCompletedAdvertisement(id: UUID, isCompleted: Boolean) = dbQuery {
+        AdvertisementTable.update({ AdvertisementTable.id eq id }) { updateStatement ->
+            updateStatement[AdvertisementTable.isCompleted] = isCompleted
+        } > 0
+    }
 }

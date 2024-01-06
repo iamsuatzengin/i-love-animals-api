@@ -23,5 +23,7 @@ interface AdvertisementDao : Dao<Advertisement> {
 
     suspend fun updateAdvertisement(id: UUID, updateAdRequest: UpdateAdRequest): Boolean
 
+    suspend fun updateIsCompletedAdvertisement(id: UUID, isCompleted: Boolean): Boolean
+
     suspend fun deleteAdvertisement(id: UUID): Boolean
 }
