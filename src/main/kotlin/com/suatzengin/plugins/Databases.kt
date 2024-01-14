@@ -27,5 +27,6 @@ fun Application.configureDatabases() {
         SchemaUtils.create(ProfileTable)
         SchemaUtils.create(CharityScoreTable)
         SchemaUtils.create(VeterinaryClinicTable)
+        SchemaUtils.create(PushNotificationDeviceTable)
     }
 }

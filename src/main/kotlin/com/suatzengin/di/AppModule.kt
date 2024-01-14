@@ -1,5 +1,6 @@
 package com.suatzengin.di
 
+import com.suatzengin.data.PushNotificationService
 import com.suatzengin.data.dao.CompleteAdvertisementController
 import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.dao.adcomment.AdCommentDaoImpl
@@ -11,6 +12,8 @@ import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.dao.charityscore.CharityScoreDaoImpl
 import com.suatzengin.data.dao.profile.ProfileDao
 import com.suatzengin.data.dao.profile.ProfileDaoImpl
+import com.suatzengin.data.dao.pushnotification.PushNotificationDao
+import com.suatzengin.data.dao.pushnotification.PushNotificationDaoImpl
 import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDao
 import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDaoImpl
 import org.koin.dsl.module
@@ -24,6 +27,9 @@ val appModule = module {
     single<VeterinaryClinicDao> { VeterinaryClinicDaoImpl() }
     single { CompleteAdvertisementController(
         advertisementDao = get(),
-        charityScoreDao = get()
+        charityScoreDao = get(),
+        pushNotificationService = get()
     ) }
+    single<PushNotificationDao>{ PushNotificationDaoImpl() }
+    single { PushNotificationService(get()) }
 }

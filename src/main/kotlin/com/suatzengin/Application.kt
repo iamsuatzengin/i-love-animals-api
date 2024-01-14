@@ -18,4 +18,5 @@ fun Application.module() {
     configureHTTP()
     configureSecurity()
     configureRouting()
+    configureFirebaseAdmin()
 }

@@ -1,6 +1,8 @@
 package com.suatzengin.routes.adcomments
 
+import com.suatzengin.data.PushNotificationService
 import com.suatzengin.data.dao.adcomment.AdCommentDao
+import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.request.adcomment.AdvertisementCommentRequest
 import com.suatzengin.data.response.MessageResponse
 import com.suatzengin.util.exception.AuthenticationException
@@ -11,9 +13,14 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.async
 import java.util.*
 
-fun Route.addAdvertisementComment(dao: AdCommentDao) {
+fun Route.addAdvertisementComment(
+    dao: AdCommentDao,
+    advertisementDao: AdvertisementDao,
+    pushNotificationService: PushNotificationService
+) {
     authenticate {
         post("/advertisement/{id}/comment") {
             runCatching {
@@ -26,11 +33,18 @@ fun Route.addAdvertisementComment(dao: AdCommentDao) {
 
                 val requestBody = call.receive<AdvertisementCommentRequest>()
 
+                val advertisement = async { advertisementDao.getAdvertisementById(uuid) }
 
                 dao.addAdvertisementComment(
                     advertisementId = uuid,
                     userId = UUID.fromString(userId),
                     commentRequest = requestBody
+                )
+
+                pushNotificationService.sendMessage(
+                    advertisement.await().creatorId.toString(),
+                    "Yeni bir yorum var!",
+                    "Paylaşmış olduğun ilanına bir yorum eklendi."
                 )
 
                 call.respond(

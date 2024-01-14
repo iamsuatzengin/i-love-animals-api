@@ -1,11 +1,13 @@
 package com.suatzengin.plugins
 
+import com.suatzengin.data.PushNotificationService
 import com.suatzengin.data.dao.CompleteAdvertisementController
 import com.suatzengin.data.dao.adcomment.AdCommentDao
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.dao.auth.AuthDao
 import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.dao.profile.ProfileDao
+import com.suatzengin.data.dao.pushnotification.PushNotificationDao
 import com.suatzengin.data.dao.veterinaryclinic.VeterinaryClinicDao
 import com.suatzengin.routes.adcomments.addAdvertisementComment
 import com.suatzengin.routes.adcomments.deleteAdvertisementComment
@@ -19,6 +21,7 @@ import com.suatzengin.routes.charityscore.updateCharityScore
 import com.suatzengin.routes.completeadvertisement.completeAdvertisementRoute
 import com.suatzengin.routes.profile.getUserProfile
 import com.suatzengin.routes.profile.updateUserProfile
+import com.suatzengin.routes.pushnotification.createPushNotificationDevice
 import com.suatzengin.routes.search.getAdvertisementByCategory
 import com.suatzengin.routes.search.searchAdvertisement
 import com.suatzengin.routes.veterinaryclinic.addVeterinaryClinic
@@ -38,6 +41,8 @@ fun Application.configureRouting() {
     val veterinaryClinicDao by inject<VeterinaryClinicDao>()
     val jwtConfig = configureJWTConfig()
     val completeAdvertisementController: CompleteAdvertisementController by inject()
+    val pushNotificationDao by inject<PushNotificationDao>()
+    val pushNotificationService by inject<PushNotificationService>()
 
     routing {
 
@@ -66,7 +71,11 @@ fun Application.configureRouting() {
 
         // Advertisement comments routes
         getAdvertisementComments(dao = adCommentDao)
-        addAdvertisementComment(dao = adCommentDao)
+        addAdvertisementComment(
+            dao = adCommentDao,
+            advertisementDao = advertisementDao,
+            pushNotificationService = pushNotificationService
+        )
         updateAdvertisementComment(dao = adCommentDao)
         deleteAdvertisementComment(dao = adCommentDao)
 
@@ -85,5 +94,8 @@ fun Application.configureRouting() {
 
         // Complete Advertisement
         completeAdvertisementRoute(controller = completeAdvertisementController)
+
+        // Push Notification Device
+        createPushNotificationDevice(dao = pushNotificationDao)
     }
 }

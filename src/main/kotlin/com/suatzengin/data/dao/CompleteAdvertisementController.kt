@@ -1,5 +1,6 @@
 package com.suatzengin.data.dao
 
+import com.suatzengin.data.PushNotificationService
 import com.suatzengin.data.dao.advertisement.AdvertisementDao
 import com.suatzengin.data.dao.charityscore.CharityScoreDao
 import com.suatzengin.data.request.charityscore.UpdateScoreRequest
@@ -11,7 +12,8 @@ import java.util.*
 
 class CompleteAdvertisementController(
     private val advertisementDao: AdvertisementDao,
-    private val charityScoreDao: CharityScoreDao
+    private val charityScoreDao: CharityScoreDao,
+    private val pushNotificationService: PushNotificationService
 ) {
 
     suspend fun completeAdvertisement(
@@ -27,9 +29,28 @@ class CompleteAdvertisementController(
                 charityScoreDao.updateUserCharityScore(UpdateScoreRequest(userId = userId, point = 5))
             }
 
-            updateAdvertisementDeferred.await() && updateScoreDeferred.await()
-        }.getOrElse { false }
+            val isCompleted = updateAdvertisementDeferred.await() && updateScoreDeferred.await()
 
+            if(isCompleted) {
+                sendPushNotification(request.advertisementId)
+            }
+
+            isCompleted
+        }.getOrElse { false }
+    }
+
+    private suspend fun sendPushNotification(advertisementId: String) = withContext(Dispatchers.IO) {
+        val advertisement = async {
+            advertisementDao.getAdvertisementById(UUID.fromString(advertisementId))
+        }
+
+        val advertisementCreatorId = advertisement.await().creatorId.toString()
+
+        pushNotificationService.sendMessage(
+            userId = advertisementCreatorId,
+            title = "İlanına yardım ulaştı!",
+            body = "İlanına bir kullanıcı tarafından yardım ulaştırıldı."
+        )
     }
 
     private fun String.toUUID() = UUID.fromString(this)

@@ -488,6 +488,27 @@ paths:
               schema:
                 $ref: "#/components/schemas/MessageResponse"
 
+  /push-notification-device/{deviceToken}:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - Push Notification Device
+      parameters:
+        - in: path
+          name: deviceToken
+          required: true
+          schema:
+            type: string
+          description: Device Token
+      responses:
+        200:
+          description: "Push notification created!"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
 components:
   schemas:
     RegisterModel:
