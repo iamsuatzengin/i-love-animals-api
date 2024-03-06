@@ -3,7 +3,7 @@ package com.suatzengin.data.dao.pushnotification
 import com.suatzengin.data.dao.Dao
 import com.suatzengin.model.PushNotificationDevice
 
-interface PushNotificationDao: Dao<PushNotificationDevice> {
+interface PushNotificationDao : Dao<PushNotificationDevice> {
 
     suspend fun getPushNotificationDevices(userId: String): List<PushNotificationDevice>
 
@@ -11,4 +11,6 @@ interface PushNotificationDao: Dao<PushNotificationDevice> {
         userId: String,
         deviceToken: String
     )
+
+    suspend fun deletePushNotificationDevice(userId: String): Boolean
 }

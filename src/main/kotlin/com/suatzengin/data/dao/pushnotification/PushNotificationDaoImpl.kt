@@ -4,6 +4,8 @@ import com.suatzengin.model.PushNotificationDevice
 import com.suatzengin.model.PushNotificationDeviceTable
 import com.suatzengin.util.extensions.dbQuery
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import java.util.*
@@ -29,5 +31,11 @@ class PushNotificationDaoImpl: PushNotificationDao {
             insertStatement[this.userId] = userId
             insertStatement[this.deviceToken] = deviceToken
         }
+    }
+
+    override suspend fun deletePushNotificationDevice(userId: String) = dbQuery {
+        PushNotificationDeviceTable.deleteWhere {
+            PushNotificationDeviceTable.userId eq userId
+        } > 0
     }
 }

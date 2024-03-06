@@ -1,8 +1,6 @@
 package com.suatzengin.data
 
-import com.google.firebase.messaging.FirebaseMessaging
-import com.google.firebase.messaging.Message
-import com.google.firebase.messaging.Notification
+import com.google.firebase.messaging.*
 import com.suatzengin.data.dao.pushnotification.PushNotificationDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -15,22 +13,40 @@ class PushNotificationService(
         userId: String,
         title: String,
         body: String
-    ) = withContext(Dispatchers.IO){
-        val devices = pushNotificationDao.getPushNotificationDevices(userId)
+    ) = withContext(Dispatchers.IO) {
 
-        devices.forEach { device ->
-            val message = Message.builder()
-                .setNotification(
-                    Notification.builder()
-                        .setTitle(title)
-                        .setBody(body)
-                        .build()
-                )
-                .setToken(device.deviceToken)
-                .build()
+        runCatching {
+            val devices = pushNotificationDao.getPushNotificationDevices(userId)
 
-            val response = FirebaseMessaging.getInstance().send(message)
-            println("response: $response")
+            devices.forEach { device ->
+                val message = Message.builder()
+                    .setNotification(
+                        Notification.builder()
+                            .setTitle(title)
+                            .setBody(body)
+                            .build()
+                    )
+                    .setToken(device.deviceToken)
+                    .build()
+
+                val response = FirebaseMessaging.getInstance().send(message)
+                println("response: $response")
+            }
+        }.onFailure { exception ->
+            handleUnregisteredException(exception) {
+                pushNotificationDao.deletePushNotificationDevice(userId)
+            }
+        }
+    }
+
+    private inline fun handleUnregisteredException(
+        exception: Throwable,
+        body: () -> Unit
+    ) {
+        if (exception is FirebaseMessagingException) {
+            if (exception.messagingErrorCode == MessagingErrorCode.UNREGISTERED) {
+                body()
+            }
         }
     }
 }
