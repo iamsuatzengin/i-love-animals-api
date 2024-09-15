@@ -10,7 +10,7 @@ Go to [I Love Animals Android Application](https://github.com/iamsuatzengin/i-lo
 ## ⚒️ Tech Stacks
 * [Kotlin](https://kotlinlang.org/)
 * [Ktor Server](https://ktor.io/docs/server-create-a-new-project.html)
-* [Firebase Admin](https://firebase.google.com/docs/cloud-messaging?hl=tr)
+* [Firebase Admin - Push Notification](https://firebase.google.com/docs/cloud-messaging?hl=tr)
 * [PostgreSQL](https://www.postgresql.org/)
 * [Exposed](https://ktor.io/docs/server-integrate-database.html) for database integration. ORM Framework
 * [Authentication](https://ktor.io/docs/server-auth.html)
